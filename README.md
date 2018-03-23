@@ -4,8 +4,6 @@
 
 CUDA/C++ code to fuse multiple registered depth maps into a projective truncated signed distance function (TSDF) voxel volume, which can then be used to create high quality 3D surface meshes and point clouds. Tested on Ubuntu 14.04 and 16.04.
 
-Looking for an older version? See [here](old-version).
-
 This repository is a part of [Andy's Code Collection](http://andyzeng.github.io/).
 
 ## Change Log
@@ -16,6 +14,13 @@ This repository is a part of [Andy's Code Collection](http://andyzeng.github.io/
 ## Requirements
  * NVIDA GPU with [CUDA](https://developer.nvidia.com/cuda-downloads) support
  * [OpenCV](http://opencv.org/) (tested with OpenCV 2.4.11)
+
+## HPC Cluster Settings
+```bashrc (add to .bashrc)
+export CUDA_HOME=/usr/local/cuda-8.0
+export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+```
 
 ## Demo
 This demo fuses 50 registered depth maps from directory `data/rgbd-frames` into a projective TSDF voxel volume, and creates a 3D surface point cloud `tsdf.ply`, which can be visualized with a 3D viewer like [Meshlab](http://www.meshlab.net/).
