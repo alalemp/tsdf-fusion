@@ -16,6 +16,8 @@ truncMargin = tsdfHeader(8);
 tsdf = fread(fid,voxelGridDim(1)*voxelGridDim(2)*voxelGridDim(3),'single');
 fclose(fid);
 
+clear meshPoints;
+
 % Convert from TSDF to mesh  
 tsdf = reshape(tsdf,[voxelGridDim(1),voxelGridDim(2),voxelGridDim(3)]);
 fv = isosurface(tsdf,0);
