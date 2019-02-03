@@ -72,8 +72,8 @@ int main(int argc, char * argv[]) {
 
   // Location of folder containing RGB-D frames and camera pose files
   std::string data_path = "data/rgbd-frames";
-  int base_frame_idx = 150;
-  int first_frame_idx = 150;
+  int base_frame_idx = 1;
+  int first_frame_idx = 1;
   float num_frames = 50;
 
   float cam_K[3 * 3];
@@ -119,6 +119,8 @@ int main(int argc, char * argv[]) {
   std::vector<float> base2world_vec = LoadMatrixFromFile(base2world_file, 4, 4);
   std::copy(base2world_vec.begin(), base2world_vec.end(), base2world);
 
+  std::cout << "Read base frame camera pose" << std::endl;
+
   // Invert base frame camera pose to get world-to-base frame transform 
   float base2world_inv[16] = {0};
   invert_matrix(base2world, base2world_inv);
@@ -129,6 +131,8 @@ int main(int argc, char * argv[]) {
   for (int i = 0; i < voxel_grid_dim_x * voxel_grid_dim_y * voxel_grid_dim_z; ++i)
     voxel_grid_TSDF[i] = 1.0f;
   memset(voxel_grid_weight, 0, sizeof(float) * voxel_grid_dim_x * voxel_grid_dim_y * voxel_grid_dim_z);
+
+  std::cout << "Initialised voxel grid" << std::endl;
 
   // Load variables to GPU memory
   float * gpu_voxel_grid_TSDF;
@@ -156,12 +160,17 @@ int main(int argc, char * argv[]) {
 
     // // Read current frame depth
     std::string depth_im_file = data_path + "/frame-" + curr_frame_prefix.str() + ".depth.png";
+
+    std::cout << "Loading:" << depth_im_file << std::endl;
+
     ReadDepth(depth_im_file, im_height, im_width, depth_im);
 
     // Read base frame camera pose
     std::string cam2world_file = data_path + "/frame-" + curr_frame_prefix.str() + ".pose.txt";
     std::vector<float> cam2world_vec = LoadMatrixFromFile(cam2world_file, 4, 4);
     std::copy(cam2world_vec.begin(), cam2world_vec.end(), cam2world);
+
+    std::cout << "Loading:" << cam2world_file << std::endl;
 
     // Compute relative camera pose (camera-to-base frame)
     multiply_matrix(base2world_inv, cam2world, cam2base);
