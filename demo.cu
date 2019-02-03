@@ -166,6 +166,13 @@ int main(int argc, char * argv[]) {
     // Compute relative camera pose (camera-to-base frame)
     multiply_matrix(base2world_inv, cam2world, cam2base);
 
+	std::cout << cam2base[0] << " " << cam2base[1] << " " << cam2base[2] << std::endl;
+	std::cout << cam2base[4] << " " << cam2base[5] << " " << cam2base[6] << std::endl;
+	std::cout << cam2base[8] << " " << cam2base[9] << " " << cam2base[10] << std::endl;
+
+	std::cout << cam2base[3] << " " << cam2base[7] << " " << cam2base[11] << std::endl;
+
+
     cudaMemcpy(gpu_cam2base, cam2base, 4 * 4 * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(gpu_depth_im, depth_im, im_height * im_width * sizeof(float), cudaMemcpyHostToDevice);
     checkCUDA(__LINE__, cudaGetLastError());
